@@ -1,5 +1,8 @@
-package com.awstan.timetaskutil.timeTask;
+package com.awstan.timetaskutil.timeTask.taskQueueImpl;
 
+import com.awstan.timetaskutil.timeTask.TimeTaskContext;
+import com.awstan.timetaskutil.timeTask.TimeTaskQueue;
+import com.awstan.timetaskutil.timeTask.TimeTaskQueueType;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * usage 基于内存的任务队列
  */
 @Component
-public class MemoryTimeTaskQueue implements TimeTaskQueue{
+public class MemoryTimeTaskQueue implements TimeTaskQueue {
 
     private final Queue<TimeTaskContext> queue = new LinkedBlockingQueue<>();
 

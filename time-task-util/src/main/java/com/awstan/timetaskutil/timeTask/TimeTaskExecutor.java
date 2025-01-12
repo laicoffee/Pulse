@@ -6,11 +6,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author pw7563
@@ -32,14 +32,14 @@ public class TimeTaskExecutor implements InitializingBean, DisposableBean {
 
     private final Executor executor;
 
-    private volatile  boolean state = true;
+    private volatile boolean state = true;
 
     private final TimeTaskConfig timeTaskConfig = new TimeTaskConfig();
 
 
     public TimeTaskExecutor(@Autowired List<TimeTask> timeTasks,
                             @Autowired List<TimeTaskQueue> timeTaskQueues) {
-        this.executor = new ThreadPoolExecutor(5, 10, 60l, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+        this.executor = new ThreadPoolExecutor(5, 10, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
         timeTasks.forEach(this::addTimeTask);
         timeTaskQueues.forEach(this::addTimeTaskQueue);
     }
@@ -69,7 +69,7 @@ public class TimeTaskExecutor implements InitializingBean, DisposableBean {
     public void afterPropertiesSet() throws Exception {
         for (TimeTaskQueueType taskQueueType : timeTaskQueueMap.keySet()) {
             for(int i=0; i<this.timeTaskConfig.getConcurrency(); i++){
-                this.executor.execute();
+                this.executor.execute(new DisPatcher(taskQueueType,i));
             }
 
         }
@@ -80,7 +80,7 @@ public class TimeTaskExecutor implements InitializingBean, DisposableBean {
      * @param timeTaskContext
      */
     public void submit(TimeTaskContext timeTaskContext){
-        String taskQueueType = timeTaskContext.getTaskQueueType().getName();
+        TimeTaskQueueType taskQueueType = timeTaskContext.getTaskQueueType();
         TimeTaskQueue timeTaskQueue = timeTaskQueueMap.get(taskQueueType);
         if(timeTaskQueue == null){
             throw new IllegalArgumentException("timeTaskQueue not found for taskType: " + taskQueueType);
@@ -112,27 +112,34 @@ public class TimeTaskExecutor implements InitializingBean, DisposableBean {
                 return;
             }
             try{
+                ReentrantLock lock = new ReentrantLock();
+                lock.lock();
                 TimeTaskQueue timeTaskQueue = TimeTaskExecutor.this.timeTaskQueueMap.get(taskQueueType);
                 List<TimeTaskContext> tasks = timeTaskQueue.poll(timeTaskConfig.getBatchSize());
                 List<TimeTaskContext> rebackTasks = new ArrayList<>();
-
-                for(TimeTaskContext task : tasks){
-                    if(isCanRun(task)){
-                        // todo: 没有实现任务执行count次
-                        TimeTask timeTask = TimeTaskExecutor.this.timeTaskMap.get(task.getTaskType());
-                        if(timeTask == null){
-                            throw new IllegalArgumentException("timeTask not found for taskType: " + task.getTaskType());
-                        }else{
-                            timeTask.run(task);
-                        }
+                System.out.println("线程池任务开始调度" + index);
+                for(TimeTaskContext taskContext : tasks){
+                    // todo: 没有实现任务执行count次
+                    TimeTask timeTask = TimeTaskExecutor.this.timeTaskMap.get(taskContext.getTaskType());
+                    if(timeTask == null){
+                        throw new IllegalArgumentException("timeTask not found for taskType: " + taskContext.getTaskType());
+                    }else if(timeTask.isCanRunnable(taskContext)){
+                        timeTask.run(taskContext);
                     }else{
-                        rebackTasks.add(task);
+                        rebackTasks.add(taskContext);
                     }
                 }
                 // 将不需要执行的任务重新入队
                 rebackTasks.forEach(timeTaskQueue::push);
             }catch (Exception e){
-
+                System.out.println("exception occurs during task execution");
+            }finally {
+                try {
+                    Thread.sleep(3000L);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                executor.execute(this);
             }
         }
 
