@@ -119,14 +119,20 @@ public class TimeTaskExecutor implements InitializingBean, DisposableBean {
                 List<TimeTaskContext> rebackTasks = new ArrayList<>();
                 System.out.println("线程池任务开始调度" + index);
                 for(TimeTaskContext taskContext : tasks){
-                    // todo: 没有实现任务执行count次
+
                     TimeTask timeTask = TimeTaskExecutor.this.timeTaskMap.get(taskContext.getTaskType());
                     if(timeTask == null){
                         throw new IllegalArgumentException("timeTask not found for taskType: " + taskContext.getTaskType());
-                    }else if(timeTask.isCanRunnable(taskContext)){
-                        timeTask.run(taskContext);
-                    }else{
-                        rebackTasks.add(taskContext);
+                    }else {
+                        // 实现任务执行count次
+                        while(!taskContext.isCompleted()){
+                            if(timeTask.isCanRunnable(taskContext)){
+                                timeTask.run(taskContext);
+                                taskContext.incrementExecutedCount();
+                            }else{
+                                rebackTasks.add(taskContext);
+                            }
+                        }
                     }
                 }
                 // 将不需要执行的任务重新入队
