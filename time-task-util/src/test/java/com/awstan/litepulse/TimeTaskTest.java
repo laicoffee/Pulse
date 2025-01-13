@@ -1,10 +1,10 @@
-package com.awstan.timetaskutil;
+package com.awstan.litepulse;
 
-import com.awstan.timetaskutil.timeTask.TimeTaskContext;
-import com.awstan.timetaskutil.timeTask.TimeTaskExecutor;
-import com.awstan.timetaskutil.timeTask.TimeTaskQueueType;
-import com.awstan.timetaskutil.timeTask.annotation.Description;
-import com.awstan.timetaskutil.timeTask.timeTaskImpl.OrdinaryTask;
+import com.awstan.litepulse.timeTask.TimeTaskContext;
+import com.awstan.litepulse.timeTask.TimeTaskExecutor;
+import com.awstan.litepulse.timeTask.TimeTaskQueueType;
+import com.awstan.litepulse.timeTask.annotation.Description;
+import com.awstan.litepulse.timeTask.timeTaskImpl.OrdinaryTask;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

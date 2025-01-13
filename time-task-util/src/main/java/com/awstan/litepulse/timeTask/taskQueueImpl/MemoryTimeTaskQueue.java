@@ -1,9 +1,8 @@
-package com.awstan.timetaskutil.timeTask.taskQueueImpl;
+package com.awstan.litepulse.timeTask.taskQueueImpl;
 
-import com.awstan.timetaskutil.timeTask.TimeTaskContext;
-import com.awstan.timetaskutil.timeTask.TimeTaskQueue;
-import com.awstan.timetaskutil.timeTask.TimeTaskQueueType;
-import org.springframework.context.annotation.ComponentScan;
+import com.awstan.litepulse.timeTask.TimeTaskContext;
+import com.awstan.litepulse.timeTask.TimeTaskQueue;
+import com.awstan.litepulse.timeTask.TimeTaskQueueType;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

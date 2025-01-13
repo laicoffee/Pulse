@@ -1,6 +1,6 @@
-package com.awstan.timetaskutil.timeTask;
+package com.awstan.litepulse.timeTask;
 
-import com.awstan.timetaskutil.timeTask.properties.TimeTaskConfig;
+import com.awstan.litepulse.timeTask.properties.TimeTaskConfig;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.awstan.timetaskutil;
+package com.awstan.litepulse;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

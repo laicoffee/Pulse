@@ -1,4 +1,4 @@
-package com.awstan.timetaskutil.timeTask.properties;
+package com.awstan.litepulse.timeTask.properties;
 
 import lombok.Data;
 

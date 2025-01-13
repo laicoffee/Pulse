@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.awstan</groupId>
-    <artifactId>time-task-util</artifactId>
+    <artifactId>litepulse</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>time-task-util</name>
     <description>time-task-util</description>

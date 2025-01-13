@@ -1,7 +1,7 @@
-package com.awstan.timetaskutil.timeTask.timeTaskImpl;
+package com.awstan.litepulse.timeTask.timeTaskImpl;
 
-import com.awstan.timetaskutil.timeTask.TimeTask;
-import com.awstan.timetaskutil.timeTask.TimeTaskContext;
+import com.awstan.litepulse.timeTask.TimeTask;
+import com.awstan.litepulse.timeTask.TimeTaskContext;
 import org.springframework.stereotype.Component;
 
 /**

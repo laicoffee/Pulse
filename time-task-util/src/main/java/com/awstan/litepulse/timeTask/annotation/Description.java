@@ -1,4 +1,4 @@
-package com.awstan.timetaskutil.timeTask.annotation;
+package com.awstan.litepulse.timeTask.annotation;
 
 import java.lang.annotation.*;
 
