@@ -141,6 +141,7 @@ public class TimeTaskExecutor implements InitializingBean, DisposableBean {
                 System.out.println("exception occurs during task execution");
             }finally {
                 try {
+                    // 这里的sleep只是用于测试，实际场景下不需要sleep
                     Thread.sleep(3000L);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
