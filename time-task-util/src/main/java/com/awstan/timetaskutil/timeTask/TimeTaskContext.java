@@ -42,12 +42,12 @@ public class TimeTaskContext implements Serializable {
     /**
      * 执行次数
      */
-    private int needExecuteCount;
+    private int needExecuteCount = 1;
 
     /**
      * 已经执行次数
      */
-    private int executedCountNum;
+    private int executedCountNum = 0;
 
     /**
      * 任务提交时间， 单位毫秒
@@ -63,6 +63,10 @@ public class TimeTaskContext implements Serializable {
         this.needExecuteCount = needExecuteCount;
         this.executedCountNum = executedCountNum;
         this.submitTime = submitTime;
+    }
+
+    public TimeTaskContext(String name, long delayTime, TimeTaskQueueType taskQueueType, Map<String, Object> taskparams, String taskType) {
+        new TimeTaskContext(name, delayTime, taskQueueType, taskparams, taskType, 1, 0, System.currentTimeMillis());
     }
 
     public TimeTaskContext addTaskParam(String key, String value) {
@@ -85,6 +89,37 @@ public class TimeTaskContext implements Serializable {
         this.executedCountNum++;
     }
 
-    // todo:构造内存方法
+
+    /**
+     * 增加任务参数, 如果任务参数已经存在，则会覆盖
+     * @param key
+     * @param value
+     */
+    public void addParam(String key, Object value){
+        this.taskparams.put(key, value);
+    }
+
+    /**
+     * 增加任务参数, 如果任务参数已经存在，则会覆盖
+     * @param params
+     */
+    public void addParams(Map<String, Object> params){
+        this.taskparams.putAll(params);
+    }
+
+
+    /**
+     * 构造一个内存队列任务
+     * @param name
+     * @param delayTime
+     * @param params
+     * @param taskType
+     * @return
+     */
+    public static TimeTaskContext buildMemoryQueueTask(String name, long delayTime, Map<String, Object> params, String taskType){
+        return new TimeTaskContext(name,delayTime, TimeTaskQueueType.MEMORY, params, taskType);
+    }
+
+
 
 }
