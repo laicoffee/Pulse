@@ -1,0 +1,5 @@
+spring:
+  data:
+    redis:
+      host: 60.204.141.230
+      port: 6379

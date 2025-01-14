@@ -48,6 +48,16 @@ public class TimeTaskTest {
     }
 
 
+    @Test
+    @Description(description = "redis队列测试")
+    public void submitRedisTask() throws IOException {
+        TimeTaskContext taskContext = new TimeTaskContext("测试任务",3000, TimeTaskQueueType.REDIS,new HashMap<>(), ordinaryTask.getType(), 3,0,System.currentTimeMillis());
+        timeTaskExecutor.submit(taskContext);
+
+        System.in.read();
+    }
+
+
 
 
 

@@ -150,15 +150,5 @@ public class TimeTaskExecutor implements InitializingBean, DisposableBean {
             }
         }
 
-        /**
-         * 判断任务是否到达执行时间
-         * @param taskContext
-         * @return
-         */
-        public boolean isCanRun(TimeTaskContext taskContext){
-            long submitTime = taskContext.getSubmitTime();
-            long delayTime = taskContext.getDelayTime();
-            return System.currentTimeMillis() - submitTime >= delayTime;
-        }
     }
 }

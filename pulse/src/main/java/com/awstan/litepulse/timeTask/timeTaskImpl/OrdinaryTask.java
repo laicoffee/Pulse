@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * @Author awstan
  * @Date 2025/1/12 15:46
- * usage
+ * usage 具体任务的实现
  */
 @Component
 public class OrdinaryTask implements TimeTask {
@@ -31,7 +31,7 @@ public class OrdinaryTask implements TimeTask {
     @Override
     public void run(TimeTaskContext context) {
 
-        System.out.println("执行任务啦   " + System.currentTimeMillis());
+        System.out.println("执行任务啦   " + System.currentTimeMillis() + "任务名称" + context.getName());
 
     }
 }
